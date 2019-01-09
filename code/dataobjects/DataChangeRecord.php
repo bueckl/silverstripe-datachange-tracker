@@ -90,9 +90,9 @@ class DataChangeRecord extends DataObject {
 			$before = Object::create($this->ClassType, json_decode($this->Before, true), true);
 			$after 	= Object::create($this->ClassType, json_decode($this->After, true), true);
 			$diff 	= DataDifferencer::create($before, $after);
-            
+
             // The solr search service injector dependency causes issues with comparison, since it has public variables that are stored in an array.
-            
+
             $diff->ignoreFields(array('searchService'));
 			$diffed = $diff->diffedData();
 			$diffText = '';
@@ -200,7 +200,7 @@ class DataChangeRecord extends DataObject {
 		}
 		if ($this->After && $this->After !== 'null' && is_array($after)) {
 			//merge the new array last to keep it's value as we want the newest version of each field
-			$this->After = json_encode(array_replace($after, json_decode($this->After, true)));
+			$this->After = json_encode(array_replace(json_decode($this->After, true), $after));
 		} else {
 			$this->After = json_encode($after);
 		}
